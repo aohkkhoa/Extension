@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+  "name": "Taobao Product Info Collector",
+  "version": "1.0",
+  "description": "Extension to collect product information from Taobao.",
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "storage",
+    "*://*.taobao.com/*",
+    "*://*/item.taobao.com/item.htm?id=*",
+    "chrome-extension://onedfljfcpbcpofgghkbkaikpfeninol/manage.html"
+  ],
+  "content_scripts": [
+      {
+          "matches": ["*://*.taobao.com/*", "*://*//item.taobao.com/item.htm?id=*"],
+          "js": ["content.js"],
+          "run_at": "document_idle"
+      }
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "browser_action": {
+  },
+  "web_accessible_resources": [
+    "manage.html"
+  ]
+}
