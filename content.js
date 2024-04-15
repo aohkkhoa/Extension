@@ -4,22 +4,32 @@ function getProductInfoAndRedirect() {
     const productInfo = {
         name: document.querySelector('.ItemHeader--mainTitle--3CIjqW5').innerText.trim(),
         price: document.querySelector('.Price--priceText--2nLbVda').innerText.trim(),
-        image: document.querySelector('.PicGallery--mainPic--1eAqOie').src
+        image: document.querySelector('.PicGallery--mainPic--1eAqOie').src,
+        // xin Diệu Hiền hãy đọc : đây là id của sản phẩm.
+        id: document.querySelector('#aliww-click-trigger').getAttribute('data-item')
     };
     console.log(productInfo);
-    //Lưu thông tin sản phẩm vào local storage để chuyển sang trang quản lý
-    // Lấy danh sách các mục đã lưu trữ từ chrome.storage
-    chrome.storage.local.get({ items: [] }, function(result) {
-        // Thêm thông tin sản phẩm mới vào danh sách
-        result.items.push(productInfo);
-    
+// Lấy danh sách các mục đã lưu trữ từ chrome.storage
+chrome.storage.local.get({ carts: [] }, function(result) {
+        const existingProduct = result.carts.find(item => item.id === productInfo.id);
+
+        if (existingProduct) {
+            // Kiểm tra nếu existingProduct.image không phải là mảng
+            if (!Array.isArray(existingProduct.image)) {
+                // Tạo một mảng mới và gán existingProduct.image vào mảng
+                existingProduct.image = [existingProduct.image];
+            }
+            // Thêm productInfo.image vào mảng existingProduct.image
+            existingProduct.image.push(productInfo.image);
+        } else {
+            // Thêm sản phẩm mới vào danh sách
+            result.carts.push(productInfo);
+        }
+
         // Lưu trữ danh sách đã cập nhật vào chrome.storage
-        chrome.storage.local.set({ items: result.items }, function() {
-        // Gửi thông điệp đến content script để chuyển sang trang quản lý
-        chrome.runtime.sendMessage({ action: "openManagePage" });
+        chrome.storage.local.set({ carts: result.carts }, function() {
         });
     });
-    
 }
 // Lắng nghe sự kiện click vào sản phẩm và gọi hàm getProductInfoAndRedirect
 document.addEventListener('click', function(event) {

@@ -1,20 +1,35 @@
-// Lấy danh sách sản phẩm từ storage và hiển thị trên trang quản lý
 chrome.storage.local.get({ items: [] }, function(result) {
     const productList = document.getElementById('productList');
-    const products = result.items; // Sửa từ result.productInfo thành result.items
+    const products = result.items;
 
     if (products && products.length > 0) {
         products.forEach(function(product) {
+            const productContainer = document.createElement('div');
+            productContainer.classList.add('product-container');
+
             const productItem = document.createElement('div');
             productItem.classList.add('product');
-            productItem.innerHTML = `
-                <img src="${product.image}" alt="${product.name}">
-                <div class="product-info">
-                    <div class="product-name">${product.name}</div>
-                    <div class="product-price">${product.price}</div>
-                </div>
+
+            // Tạo các phần tử <img> cho mỗi hình ảnh trong mảng existingProduct.image
+            product.image.forEach(function(image) {
+                const imgElement = document.createElement('img');
+                imgElement.src = image;
+                imgElement.alt = product.name;
+                productItem.appendChild(imgElement);
+            });
+
+            productContainer.appendChild(productItem);
+
+            const productInfo = document.createElement('div');
+            productInfo.classList.add('product-info');
+            productInfo.innerHTML = `
+                <div class="product-name">${product.name}</div>
+                <div class="product-price">${product.price}</div>
+                <div class="product-id">${product.id}</div>
             `;
-            productList.appendChild(productItem);
+
+            productContainer.appendChild(productInfo);
+            productList.appendChild(productContainer);
         });
     } else {
         productList.innerHTML = "<em>No product added yet.</em>";
@@ -40,12 +55,21 @@ document.getElementById('exportButton').addEventListener('click', function() {
 
         // Tạo một worksheet mới
         const ws = XLSX.utils.aoa_to_sheet([
-            ['Name', 'Price', 'Image'] // Tiêu đề cột
+            ['Name', 'Price', 'Image1', 'Image2', 'Image3'] // Tiêu đề cột
         ]);
 
-        // Thêm dữ liệu sản phẩm vào worksheet
+       // Thêm dữ liệu sản phẩm vào worksheet
         products.forEach((product) => {
-            XLSX.utils.sheet_add_aoa(ws, [[product.name, product.price, product.image]], { origin: -1 });
+            // Tạo một mảng dữ liệu chứa thông tin sản phẩm
+            const rowData = [product.name, product.price];
+
+            // Thêm mỗi ảnh trong product.image là một trường riêng trong mảng dữ liệu
+            product.image.forEach((image) => {
+                rowData.push(image);
+            });
+
+            // Thêm dữ liệu sản phẩm vào worksheet
+            XLSX.utils.sheet_add_aoa(ws, [rowData], { origin: -1 });
         });
 
         // Thêm worksheet vào workbook

@@ -9,7 +9,8 @@
     "storage",
     "*://*.taobao.com/*",
     "*://*/item.taobao.com/item.htm?id=*",
-    "chrome-extension://onedfljfcpbcpofgghkbkaikpfeninol/manage.html"
+    "chrome-extension://onedfljfcpbcpofgghkbkaikpfeninol/manage.html",
+    "contextMenus"
   ],
   "content_scripts": [
       {
@@ -18,11 +19,14 @@
           "run_at": "document_idle"
       }
   ],
+  
   "background": {
     "scripts": ["background.js"],
     "persistent": false
+    
   },
   "browser_action": {
+    "default_popup": "popup.html"
   },
   "web_accessible_resources": [
     "manage.html"
