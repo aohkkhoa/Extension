@@ -1,34 +1,50 @@
 // Lấy danh sách sản phẩm từ storage và hiển thị trên trang quản lý
 chrome.storage.local.get({ carts: [] }, function(result) {
-    const productList = document.getElementById('productList');
-    const products = result.carts;
+  const productList = document.getElementById('productList');
+  const products = result.carts;
 
-    if (products && products.length > 0) {
-        products.forEach(function(product) {
-            const productItem = document.createElement('div');
-            productItem.classList.add('product');
+  if (products && products.length > 0) {
+      products.forEach(function(product) {
+          const productContainer = document.createElement('div');
+          productContainer.classList.add('product-container');
 
-            // Tạo các phần tử <img> cho mỗi hình ảnh trong mảng existingProduct.image
-            product.image.forEach(function(image) {
-                const imgElement = document.createElement('img');
-                imgElement.src = image;
-                imgElement.alt = product.name;
-                productItem.appendChild(imgElement);
-            });
+          const productItem = document.createElement('div');
+          productItem.classList.add('product');
 
-            const productInfo = document.createElement('div');
-            productInfo.classList.add('product-info');
-            productInfo.innerHTML = `
-                <div class="product-name">${product.name}</div>
-                <div class="product-price">${product.price}</div>
-            `;
+          // Tạo các phần tử <img> cho mỗi hình ảnh trong mảng existingProduct.image
+          product.image.forEach(function(image) {
+              const imgElement = document.createElement('img');
+              imgElement.src = image;
+              imgElement.alt = product.name;
+              productItem.appendChild(imgElement);
+          });
 
-            productItem.appendChild(productInfo);
-            productList.appendChild(productItem);
-        });
-    } else {
-        productList.innerHTML = "<em>No product added yet.</em>";
-    }
+          productContainer.appendChild(productItem);
+
+          const productInfo = document.createElement('div');
+          productInfo.classList.add('product-info');
+          productInfo.innerHTML = `
+              <div class="product-name">${product.name}</div>
+              <div class="product-price">${product.price}</div>
+              <button class="delete-btn">Xóa</button>
+          `;
+
+          productContainer.appendChild(productInfo);
+          productList.appendChild(productContainer);
+
+          // Xử lý sự kiện click cho nút xóa
+          const deleteBtn = productInfo.querySelector('.delete-btn');
+          deleteBtn.addEventListener('click', function() {
+              // Xóa sản phẩm khỏi giao diện người dùng
+              productContainer.remove();
+              // Xóa sản phẩm khỏi local storage
+              const updatedProducts = products.filter(p => p.id !== product.id);
+              chrome.storage.local.set({ carts: updatedProducts });
+          });
+      });
+  } else {
+      productList.innerHTML = "<em>No product added yet.</em>";
+  }
 });
 
 document.getElementById("import-btn").addEventListener("click", function() {

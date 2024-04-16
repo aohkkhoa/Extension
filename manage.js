@@ -26,10 +26,21 @@ chrome.storage.local.get({ items: [] }, function(result) {
                 <div class="product-name">${product.name}</div>
                 <div class="product-price">${product.price}</div>
                 <div class="product-id">${product.id}</div>
+                <button class="delete-btn">Xóa</button>
             `;
 
             productContainer.appendChild(productInfo);
             productList.appendChild(productContainer);
+
+            // Xử lý sự kiện click cho nút xóa
+            const deleteBtn = productInfo.querySelector('.delete-btn');
+            deleteBtn.addEventListener('click', function() {
+                // Xóa sản phẩm khỏi giao diện người dùng
+                productContainer.remove();
+                // Xóa sản phẩm khỏi local storage
+                const updatedProducts = products.filter(p => p.id !== product.id);
+                chrome.storage.local.set({ items: updatedProducts });
+            });
         });
     } else {
         productList.innerHTML = "<em>No product added yet.</em>";

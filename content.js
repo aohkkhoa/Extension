@@ -14,14 +14,10 @@ chrome.storage.local.get({ carts: [] }, function(result) {
         const existingProduct = result.carts.find(item => item.id === productInfo.id);
 
         if (existingProduct) {
-            // Kiểm tra nếu existingProduct.image không phải là mảng
-            if (!Array.isArray(existingProduct.image)) {
-                // Tạo một mảng mới và gán existingProduct.image vào mảng
-                existingProduct.image = [existingProduct.image];
-            }
             // Thêm productInfo.image vào mảng existingProduct.image
             existingProduct.image.push(productInfo.image);
         } else {
+            productInfo.image = [productInfo.image];
             // Thêm sản phẩm mới vào danh sách
             result.carts.push(productInfo);
         }
