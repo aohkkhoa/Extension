@@ -9,12 +9,17 @@
     "storage",
     "*://*.taobao.com/*",
     "*://*/item.taobao.com/item.htm?id=*",
+    "*://*/detail.tmall.com/item.htm?id=*",
     "chrome-extension://onedfljfcpbcpofgghkbkaikpfeninol/manage.html",
     "contextMenus"
   ],
   "content_scripts": [
       {
-          "matches": ["*://*.taobao.com/*", "*://*//item.taobao.com/item.htm?id=*"],
+          "matches": 
+          ["*://*.taobao.com/*",
+          "*://*.tmall.com/*",
+          "*://*//item.taobao.com/item.htm?id=*",
+           "*://*/detail.tmall.com/item.htm?id=*"],
           "js": ["content.js"],
           "run_at": "document_idle"
       }
