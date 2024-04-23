@@ -5,69 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Product Manager</title>
-    <style>
-        /* CSS cho trang quản lý */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .product {
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid #ccc;
-            padding: 10px 0;
-        }
-
-        .product img {
-            width: 80px;
-            height: 80px;
-            margin-right: 20px;
-        }
-
-        .product-info {
-            flex-grow: 1;
-        }
-
-        .product-name {
-            font-weight: bold;
-        }
-
-        .product-price {
-            color: green;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <h1>Product Manager</h1>
-        <div class="clear-button">
+        <div class="toolbar">
             <button id="clearButton">Clear Data</button>
-        </div>
-        <div class="export-button">
             <button id="exportButton">Export to Excel</button>
-        </div>
-        <div class="api-test">
-            <button id="api-test">test-call api</button>
-        </div>
-        <div class="api-test-export-csv">
-            <button id="api-test-export-csv">api-test-export-csv</button>
+            <button id="api-test">Test API</button>
+            <button id="api-test-export-csv">Export CSV</button>
         </div>
         <div id="productList"></div>
     </div>

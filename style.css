@@ -1,0 +1,103 @@
+/* styles.css */
+
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Toolbar */
+.toolbar {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.toolbar button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.toolbar button:hover {
+    background-color: #45a049;
+}
+
+/* Product Styles */
+.product {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+.product-img img {
+    width: 80px;
+    height: 80px;
+    margin-right: 20px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.product-info {
+    flex-grow: 1;
+}
+
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.product-table th,
+.product-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.product-table th {
+    text-align: left;
+}
+
+.product-name {
+    font-weight: bold;
+}
+
+.product-price {
+    color: green;
+}
+
+.delete-btn {
+    padding: 5px 10px;
+    font-size: 14px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+    background-color: #d32f2f;
+}

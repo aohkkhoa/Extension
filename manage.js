@@ -3,42 +3,48 @@ chrome.storage.local.get({ items: [] }, function(result) {
     const products = result.items;
 
     if (products && products.length > 0) {
-        products.forEach(function(product) {
-            const productContainer = document.createElement('div');
-            productContainer.classList.add('product-container');
+        const productTable = document.createElement('table');
+        productTable.classList.add('product-table');
 
-            const productItem = document.createElement('div');
-            productItem.classList.add('product');
+        productTable.innerHTML = `
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>ID</th>
+                    <th>Image</th>
+                    <th>Sizes</th>
+                    <th>Colors</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            ${products.map(product => `
+                <tr class="product-item">
+                    <td class="product-name">${product.name}</td>
+                    <td class="product-price">${product.price}</td>
+                    <td class="product-id">${product.id}</td>
+                    <td class="product-img">${product.image.map(img => `<img src="${img}" alt="${product.name}" class="product-img">`).join('')}</td>
+                    <td class="product-sizes">${product.sizes}</td>
+                    <td class="product-colors">${product.colors}</td>
+                    <td class="product-action"><button class="delete-btn">Delete</button></td>
+                </tr>
+            `).join('')}
+            </tbody>
+        `;
 
-            // Tạo các phần tử <img> cho mỗi hình ảnh trong mảng existingProduct.image
-            product.image.forEach(function(image) {
-                const imgElement = document.createElement('img');
-                imgElement.src = image;
-                imgElement.alt = product.name;
-                productItem.appendChild(imgElement);
-            });
+        productList.appendChild(productTable);
 
-            productContainer.appendChild(productItem);
-
-            const productInfo = document.createElement('div');
-            productInfo.classList.add('product-info');
-            productInfo.innerHTML = `
-                <div class="product-name">${product.name}</div>
-                <div class="product-price">${product.price}</div>
-                <div class="product-id">${product.id}</div>
-                <button class="delete-btn">Xóa</button>
-            `;
-
-            productContainer.appendChild(productInfo);
-            productList.appendChild(productContainer);
-
-            // Xử lý sự kiện click cho nút xóa
-            const deleteBtn = productInfo.querySelector('.delete-btn');
-            deleteBtn.addEventListener('click', function() {
-                // Xóa sản phẩm khỏi giao diện người dùng
-                productContainer.remove();
-                // Xóa sản phẩm khỏi local storage
-                const updatedProducts = products.filter(p => p.id !== product.id);
+        // Handle click event for delete button
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        deleteButtons.forEach((button, index) => {
+            button.addEventListener('click', function() {
+                const productItem = button.closest('.product-item');
+                const productId = productItem.querySelector('.product-id').textContent;
+                // Remove the product from the user interface
+                productItem.remove();
+                // Remove the product from local storage
+                const updatedProducts = products.filter(p => p.id !== productId);
                 chrome.storage.local.set({ items: updatedProducts });
             });
         });
@@ -46,6 +52,7 @@ chrome.storage.local.get({ items: [] }, function(result) {
         productList.innerHTML = "<em>No product added yet.</em>";
     }
 });
+
 // Lắng nghe sự kiện click vào nút "Clear Data"
 document.getElementById('clearButton').addEventListener('click', function() {
     // Xóa dữ liệu trong local storage
