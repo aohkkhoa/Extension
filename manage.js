@@ -21,7 +21,7 @@ chrome.storage.local.get({ items: [] }, function(result) {
             <tbody>
             ${products.map(product => `
                 <tr class="product-item">
-                    <td class="product-name">${product.name}</td>
+                    <td class="product-name">${product.name} </td>
                     <td class="product-price">${product.price}</td>
                     <td class="product-id">${product.id}</td>
                     <td class="product-img">${product.image.map(img => `<img src="${img}" alt="${product.name}" class="product-img">`).join('')}</td>
