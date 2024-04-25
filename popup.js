@@ -12,12 +12,34 @@ chrome.storage.local.get({ carts: [] }, function(result) {
           productItem.classList.add('product');
 
           // Tạo các phần tử <img> cho mỗi hình ảnh trong mảng existingProduct.image
-          product.image.forEach(function(image) {
-              const imgElement = document.createElement('img');
-              imgElement.src = image;
-              imgElement.alt = product.name;
-              productItem.appendChild(imgElement);
-          });
+          product.image.forEach(function(imageUrl, index) {
+            const imgContainer = document.createElement('div');
+            imgContainer.classList.add('image-container');
+        
+            const imgElement = document.createElement('img');
+            imgElement.src = imageUrl;
+            imgElement.alt = product.name;
+        
+            const deleteImgBtn = document.createElement('button');
+            deleteImgBtn.innerHTML = '&#10006;'; // Sử dụng biểu tượng X Unicode
+            deleteImgBtn.classList.add('delete-img-btn');
+        
+            deleteImgBtn.addEventListener('click', function() {
+                imgContainer.remove();
+                product.image.splice(index, 1);
+                const updatedProducts = products.map(p => {
+                    if (p.id === product.id) {
+                        return product;
+                    }
+                    return p;
+                });
+                chrome.storage.local.set({ carts: updatedProducts });
+            });
+        
+            imgContainer.appendChild(imgElement);
+            imgContainer.appendChild(deleteImgBtn);
+            productItem.appendChild(imgContainer);
+        });
 
           productContainer.appendChild(productItem);
 
