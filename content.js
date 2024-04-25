@@ -34,6 +34,7 @@ function getProductInfoAndRedirect() {
             // Thêm thông tin kích cỡ vào productInfo
             productInfo.sizes = sizes;
         }
+        productInfo.urlItem  = window.location.href;
     });
 
 // Lấy danh sách các mục đã lưu trữ từ chrome.storage

@@ -1,6 +1,6 @@
 chrome.storage.local.get({ items: [] }, function(result) {
     const productList = document.getElementById('productList');
-    const products = result.items;
+    var products = result.items;
 
     if (products && products.length > 0) {
         const productTable = document.createElement('table');
@@ -44,8 +44,8 @@ chrome.storage.local.get({ items: [] }, function(result) {
                 // Remove the product from the user interface
                 productItem.remove();
                 // Remove the product from local storage
-                const updatedProducts = products.filter(p => p.id !== productId);
-                chrome.storage.local.set({ items: updatedProducts });
+                products = products.filter(p => p.id !== productId);
+                chrome.storage.local.set({ items: products });
             });
         });
     } else {
