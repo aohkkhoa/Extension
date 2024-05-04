@@ -44,8 +44,12 @@ chrome.storage.local.get({ items: [] }, function(result) {
                 // Remove the product from the user interface
                 productItem.remove();
                 // Remove the product from local storage
+                console.log('Product before removed from local storage', products);
                 const updatedProducts = products.filter(p => p.id !== productId);
-                chrome.storage.local.set({ items: updatedProducts });
+                chrome.storage.local.set({ items: updatedProducts }, function() {
+                    // Callback after updating local storage
+                    console.log('Product removed from local storage', updatedProducts);
+                });
             });
         });
     } else {
